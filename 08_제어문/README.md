@@ -85,6 +85,7 @@ console.log(count); // 3
 // String.prototype.match 메서드 사용해도 같은 동작
 const regexp = new RegExp(search, 'g');
 console.log(string.match(regexp).length);
+
 ```
 
 
