@@ -11,3 +11,4 @@ for(var i = 0; i < string.length; i++){
 }
 
 console.log(index); // 2
+console.log(string.indexOf(search)); // 2 메서드 사용으로 위와 동일하게 실행
