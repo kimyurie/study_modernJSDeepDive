@@ -49,6 +49,17 @@ console.log(foo); // undefined
 ```
 <br/><br/>
 # 심벌타입
++ 변경 불가능한 원시 타입의 값이며 다른 값과 중복되지 않는 유일무이한 값 => 주로 이름이 충돌할 위험이 없는 객체의 유일한 프로퍼티 키를 만들기 위해 사용
++ Symbol 함수를 호출해 생성 => 생성된 심벌값은 외부에 노출되지 않으며 다른 값과 절대 중복되지 않는 유일무이한 값!
+```js
+var key = Symbol('key');
+console.log(typeof key);  // symbol
+
+var obj = {};
+
+obj[key] = 'value';
+console.log(obj[key]); // value
+```
 <br/><br/>
 # 객체타입
 > 자바스크립트를 이루고 있는 거의 모든 것이 객체
