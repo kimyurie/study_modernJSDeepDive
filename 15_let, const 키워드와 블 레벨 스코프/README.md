@@ -49,5 +49,37 @@ console.log(foo); // 1
 console.log(bar); // ReferenceError: bar is not defined
 ```
 ## 15.2.3 변수 호이스팅
++ let 키워드 선언한 변수는 변수 호이스팅이 발생하지 않는 것처럼 동작
+```js
+console.log(foo); // ReferenceError: foo is not defined
+let foo;
+```
+> ☑️ let 키워드로 선언한 변수는 "선언 단계"와 "초기화 단계"가 분리되어 실행 (var은 같이 실행됨)<br/>
+> => 런타임 이전에 js 엔진에 의해 암묵적으로 선언 단계가 먼저 실행되지만 초기화 단계는 변수 선언문에 도달했을 때 실행된다.
+* let 키워드로 선언한 변수는 스코프 시작 지점 ~ 초기화 단계 시작 지점(변수 선언문)까지 변수를 참조할 수 없다.
+```js
+// 초기화 단계가 실행되기 이전에 변수에 접근하려고 하면 참조 에러 발생
+// 초기화 이전의 일시적 사각 지대
+console.log(foo); // ReferenceError: foo is not defined
 
+let foo; // 변수 선언문에서 초기화 단계 실행
+console.log(foo); // undefined
+
+foo = 1;
+console.log(foo); // 1
+```
++ let 키워드로 선언한 변수는 호이스팅 발생
+```js
+let foo = 1;
+
+{
+    console.log(foo); // ReferenceError // 만약 let이 호이스팅 발생하지 않는다면 foo 값 출력 되어야 함
+    let foo = 2;
+}
+```
+## 15.2.4 전역 객체와 let
++ var 키워드로 선언한 전역 변수와 전역 함수, 그리고 선언하지 않은 변수에 값을 할당한 암묵적 전역은 전역 객체 window의 프로퍼티가 된다.
++ 전역 객체 프로퍼티 참조 시 window는 생략 가능
+```js
+```
 
