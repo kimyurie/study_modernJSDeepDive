@@ -81,5 +81,67 @@ let foo = 1;
 + var 키워드로 선언한 전역 변수와 전역 함수, 그리고 선언하지 않은 변수에 값을 할당한 암묵적 전역은 전역 객체 window의 프로퍼티가 된다.
 + 전역 객체 프로퍼티 참조 시 window는 생략 가능
 ```js
+// 브라우저 환경에서 실행
+var x = 1; // 전역 변수
+y = 2; // 암묵적 전역
+ 
+function foo(){} // 전역 함수
+
+console.log(window.x); // 1
+console.log(x); // 1
+
+console.log(window.y); // 2
+console.log(y); /// 2
+
+console.log(window.foo); // ƒ foo(){}
+console.log(foo()); // ƒ foo(){}
 ```
++ let 키워드로 선언한 전역 변수는 전역 객체의 프로퍼티가 x => window.foo와 같이 접근 불가
+```js
+// 브라우저 환경에서 실행
+let x = 1;
+ 
+// let, const 키워드로 선언한 전역 변수는 전역 객체 window의 프로퍼티가 아니다
+console.log(window.x); // undefined
+console.log(x); // 1
+```
+# 15.3 const 키워드
+## 15.3.1 선언과 동시에 초기화
++ const 키워드로 선언한 변수는 반드시 선언과 동시에 초기화해야 한다 (선언만 하면 에러 발생)
+```js
+const foo = 1;
+```
++ const 키워드로 선언한 변수는 블록 레벨 스코프를 가지며 변수 호이스팅이 발생하지 않는 것처럼 작동한다
+```js
+{
+    // 변수 호이스팅이 발생하지 않는 것처럼 동작
+    console.log(foo); // ReferenceError: foo is not defined
+    const foo = 1;
+    console.log(foo); // 1
+}
+
+// 블록 레벨 스코프 가짐
+console.log(foo); // ReferenceError: foo is not defined
+```
+## 15.3.2 재할당 금지
++ const 키워드로 선언한 변수는 재할당이 금지된다.
+## 15.3.3 상수
++ const 키워드를 상수를 표현하는 데 사용 (상수 : 재할당이 금지된 변수)
+## 15.3.4 const 키워드와 객체
++ const 키워드로 선언한 변수에 객체를 할당한 경우 값 변경 가능 (객체는 재할당 없이 직접 변경 가능하기 때문)
+```js
+const person = {
+    name : 'Lee'
+};
+
+// 객체는 변경 가능한 값으로 재할당 없이 변경 가능
+person.name = 'Kim';
+
+console.log(person); // { name: 'Kim' }
+```
+> ☑️ const 키워드는 재할당을 금지할 뿐 "불변"을 의미하지는 않는다
+# 15.4 var vs let vs const
++ 재할당 필요한 경우 let 사용하며 변수 스코프는 최대한 좁게!
++ 변경 발생하지 않고 읽기 전용으로 사용하는 (재할당 필요없는 상수) 원시값과 객체에는 const 키워드 사용! (재할당 금지하므로 let,var보다 안전)  
+
 
