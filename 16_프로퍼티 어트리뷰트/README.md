@@ -35,10 +35,9 @@ console.log(Object.getOwnPropertyDescriptors(person));
 // name : {value: 'Lee', writable: true, enumerable: true, configurable: true}
 ```
 # 16.3 데이터 프로퍼티와 접근자 프로퍼티
-> 데이터 프로퍼티 : 키와 값으로 구성된 일반적인 프로퍼티<br/>
-> 접근자 프로퍼티 : 자체적으로는 값을 갖지 않고 다른 데이터 프로퍼티 값을 읽거나 저장할 때 호출되는 접근자 함수로 구성된 프로퍼티
-<br/><br/>
-# 16.3.1 데이터 프로퍼티
+## 16.3.1 데이터 프로퍼티
+> 키와 값으로 구성된 일반적인 프로퍼티
+
 | 프로퍼티 어트리뷰트 | 프로퍼티 디스크립터 객체의 프로퍼티 | 설명                                                     |
 | ------------------- | ----------------------------------- | -------------------------------------------------------- |
 | [[Value]]           | value                               | + 프로퍼티 키를 통해 프로퍼티 값에 접근하면 반환 되는 값 |
@@ -57,7 +56,116 @@ console.log(Object.getOwnPropertyDescriptors(person));
 // age: {value: 20, writable: true, enumerable: true, configurable: true} // 동적 추가해도 마찬가지
 
 ```
-# 16.3.2 접근자 프로퍼티
+## 16.3.2 접근자 프로퍼티
+> 자체적으로는 값을 갖지 않고 다른 데이터 프로퍼티 값을 읽거나 저장할 때 호출되는 접근자 함수로 구성된 프로퍼티
+
+| 프로퍼티 어트리뷰트 | 프로퍼티 디스크립터 객체의 프로퍼티 | 설명                                                                     |
+| ------------------- | ----------------------------------- | ------------------------------------------------------------------------ |
+| [[Get]]             | get                                 | 데이터 프로퍼티의 값을 읽을 때 호출되는 접근자 함수 → getter 함수 호출   |
+| [[Set]]             | set                                 | 데이터 프로퍼티의 값을 저장할 때 호출되는 접근자 함수 → setter 함수 호출 |
+| [[Enumerable]]      | enumerable                          | 데이터 프로퍼티의 [[Enumerable]] 과 같음                               |
+| [[Configurable]]    | configurable                        | 데이터 프로퍼티의 [[Configurable]] 과 같음                            |
+
+# 16.4 프로퍼티 정의
+> Object.defineProperty 메서드 사용
+```js
+const person = {};
+
+// 데이터 프로퍼티 정의
+Object.defineProperty(person, 'firstName',{
+    value:'Yuri',
+    writable:true,
+    enumerable: true,
+    configurable: true
+});
+
+Object.defineProperty(person, 'lastName',{
+    value:'Kim',
+});
+
+let descriptor = Object.getOwnPropertyDescriptor(person, 'firstName');
+console.log('firstName', descriptor); // {value: 'Yuri', writable: true, enumerable: true, configurable: true}
+
+// 디스크립터 객체 누락 시 undefined, false가 기본값
+descriptor = Object.getOwnPropertyDescriptor(person, 'lastName');
+console.log('firstName', descriptor); // {value: 'Kim', writable: false, enumerable: false, configurable: false}
+
+// 접근자 프로퍼티 정의
+Object.defineProperty(person, 'fullName', {
+    get(){
+        return `${this.firstName} ${this.lastName}`;
+    },
+    set(name){
+        [this.firstName, this.lastName] = name.split(' ');
+    },
+    enumerable:true,
+    configurable:true
+});
+
+descriptor = Object.getOwnPropertyDescriptor(person, 'fullName');
+console.log('fullName', descriptor);  // {enumerable: true, configurable: true, get: ƒ, set: ƒ}
+
+person.fullName = 'Heegun Kim';
+console.log(person); // {firstName: 'Heegun', lastName: 'Kim'}
+```
++ 프로퍼티 디스크립트 객체에서 생성된 어트리뷰트는 기본값이 적용(undefined나 false)
++ Object.defineProperties 사용시 여러개 프로퍼티 정의 (228p 참고)
+<br/><br/>
+# 16.5 객체 변경 방지
+## 16.5.1 객체 확장 금지
+> 확장이 금지된 객체는 프로퍼티 추가가 금지
+```js
+Object.preventExtensions(객체);
+
+// 확장 가능한 객체인지 판단 여부 메서드 -> boolean
+Object.isExtensible(객체);
+```
+## 16.5.2 객체 밀봉
+> 밀봉된 객체는 읽기와 쓰기만 가능 (프로퍼티 추가, 삭제, 재정의 금지)
+```js
+Object.seal(객체);
+
+// 확장 가능한 객체인지 판단 여부 메서드 -> boolean
+Object.isSealed(객체);
+```
+## 16.5.3 객체 동결
+> 동결된 객체는 읽기만 가능 (프로퍼티 추가, 삭제, 재정의, 쓰기 금지)
+```js
+Object.free(객체);
+
+// 동결된 객체인지 판단 여부 메서드 -> boolean
+Object.isFrozen(객체);
+```
+## 16.5.4 불변 객체
++ 지금까지 살펴본 변경 방지 메서드들은 얇은 변경 방지로 중첩 객체까지는 영향을 주지 못함 (Object.freeze 메서드 사용해도 마찬가지)
++ => 해결 : 객체를 값으로 갖는 모든 프로퍼티에 대해 재귀적으로 Object.freeze 메서드 호출해야 함)
+```js
+function deepFreeze(target){
+    // 객체이고 동결되지 않은 객체만 동결
+    if (target && typeof target === 'object' && !Object.isFrozen(target)){
+        Object.freeze(target);
+        // 모든 프로퍼티 순회하며 재귀적으로 동결
+        // Object.keys 메서드 : 객체 자신의 열거 가능한 프로퍼티를 배열로 반환 
+        // forEach 메서드 : 배열 순회하며 배열 각 요소에 대해 콜백함수 실행
+        Object.keys(target).forEach(key => deepFreeze(target[key]));
+    }
+    return target;
+}
+
+const person = {
+    name: 'Lee',
+    address: {city: 'Seoul'}
+};
+
+deepFreeze(person);
+
+console.log(Object.isFrozen(person)); // true
+console.log(Object.isFrozen(person.address)); // true // 중첩 객체까지 동결
+
+person.address.city = 'Busan';
+console.log(person); // { name: 'Lee', address: { city: 'Seoul' } }
+```
+
 
 
 
