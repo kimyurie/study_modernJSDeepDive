@@ -54,7 +54,7 @@ person.age = 20; // 프로퍼티 동적 생성
 
 console.log(Object.getOwnPropertyDescriptors(person));
 // name : {value: 'Lee', writable: true, enumerable: true, configurable: true} // 프로퍼티 생성 시 [[Value]] 값은 프로퍼티 값으로 초기화 / 나머지 값들은 true로 초기
-// age: {value: 20, writable: true, enumerable: true, configurable: true} // 동적 추가해도 마찬가
+// age: {value: 20, writable: true, enumerable: true, configurable: true} // 동적 추가해도 마찬가지
 
 ```
 # 16.3.2 접근자 프로퍼티
