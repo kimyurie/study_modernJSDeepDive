@@ -72,6 +72,17 @@ console.log(obj.x); // 1
 + __proto__ 접근자 프로퍼티는 객체가 직접 소유하는 프로퍼티가 아니라 Object.prototype의 프로퍼티다.
 + 모든 객체는 상속을 통해 Object.prototype.__proto__ 접근자 프로퍼티를 사용할 수 있다.
 ```js
+const person = {name:'Lee'};
+
+// person 객체는 __proto__ 프로퍼티를 소유하지 않는다
+console.log(person.hasOwnProperty('__proto__')); // false
+
+// __proto__ 프로퍼티는 모든 객체의 프로토타입 객체인 Object.prototype의 접근자 프로퍼티다. 
+console.log(Object.getOwnPropertyDescriptor(Object.prototype, '__proto__'));
+// { get: [Function: get __proto__], set: [Function: set __proto__], enumerable: false, configurable: true }
+
+// 모든 객체는 Object.prototype의 접근자 프로퍼티 __proto__를 상속받아 사용할 수 있다. 
+console.log({}.__proto__ == Object.prototype); // true
 ```
 ### __proto__ 접근자 프로퍼티를 통해 프로토타입에 접근하는 이유
 > 상호 참조에 의해 프로토타입 체인이 생성되는 것을 방지하기 위해서
@@ -145,23 +156,37 @@ const me = new Person('Lee');
 console.log(me.constructor === Person); // true
 ```
 # 19.4 리터럴 표기법에 의해 생성된 객체의 생성자 함수와 프로토타입
-> 리터럴 표기법( { } ) 으로 생성된 객체의 프로토타입의 경우, constructor 프로퍼티가 가리키는 생성자 함수가 반드시 객체를 생성한 생성자 함수가 아닐 수 있다.
 ```js
-// obj 객체는 Object 생성자 함수로 생성한 객체가 아니라 객체 리터럴로 생성했다.
+// obj 객체는 Object 생성자 함수로 생성한 객체가 아니라 객체 리터럴로 생성했다. 
 const obj = {};
 
-// 하지만 obj 객체의 생성자 함수는 Object 생성자 함수다.
+// 하지만 obj 객체의 생성자 함수는 Object 생성자 함수이다. 
 console.log(obj.constructor === Object); // true
 ```
-* 프로토타입과 생성자 함수는 단독으로 존재할 수 없고 언제나 쌍으로 존재한다
-* => 리터럴 표기법에 의해 생성된 객체도 생성자 함수와 연결된다
-내용 추가 하깅~~
+```js
+// foo 함수는 Function 생성자 함수로 생성한 함수 객체가 아니라 함수 선언문으로 생성했다. 
+function foo(){}
+
+// 하지만 함수 foo의 생성자 함수는 Function 생성자 함수이다. 
+console.log(foo.constructor === Function); // true
+```
+> 프로토타입은 생성자 함수와 더불어 생성되며 prototype, constructor 프로퍼티에 의해 연결되어 있다 <br/>
+  ☑️ 프로토타입과 생성자 함수는 단독으로 존재할 수 없고 언제나 쌍으로 존재!
++ 리터럴 표기법으로 생성한 객체도 생성자 함수로 생성한 객체와 본질적인 면에서 큰 차이 x
++ 프로토타입의 constructor 프로퍼티를 통해 연결되어 있는 생성자 함수 = 리터럴 표기법으로 생성한 객체를 생성한 생성자 함수
+- 리터럴 표기법에 의해 생성된 객체의 생성자 함수와 프로토타입
+
+| 리터럴 표기법      | 생성자 함수 | 프로토타입         |
+| ------------------ | ----------- | ------------------ |
+| 객체 리터럴        | Object      | Object.prototype   |
+| 함수 리터럴        | Function    | Function.prototype |
+| 배열 리터럴        | Array       | Array.prototype    |
+| 정규 표현식 리터럴 | RegExp      | RegExp.prototype   |
 <br/><br/>
 # 19.5 프로토타입의 생성 시점
 > 프로토타입은 생성자 함수가 생성되는 시점에 더불어 생성된다.
-+ 생성자 함수 = 사용자가 직접 정의한 사용자 정의 생성자 함수 or js가 기본 제공하는 빌트인 생성자 함수
 ## 19.5.1 사용자 정의 생성자 함수와 프로토타입 생성 시점
-> 생성자 함수로서 호출할 수 있는 함수, 즉 constructor는 함수 정의가 평가되어 함수 객체가 생성하는 시점에 프로토타입도 더불어 생성된다.
+> 함수 정의가 평가되어 함수 객체가 생성하는 시점에 프로토타입도 더불어 생성 => 생성된 프로토타입은 언제나 Object.prototype
 ```js
 // 함수 정의가 평가되어 함수 객체를 생성하는 시점에 프로토타입 더불어 생성
 // 함수 호이스팅 적용
@@ -172,15 +197,12 @@ function Person(name){
     this.name =name;
 }
 ```
-+ 생성된 프로토타입은 오직 constructor 프로퍼티 만을 갖는 객체
-+ 프로토타입도 객체이며, 모든 객체는 프로토타입을 가진다.
-+ 그러므로, 프로토타입도 자신의 프로토타입을 가진다. => 생성된 프로토타입의 프로토타입은 Object.prototype
-<br/><br/>
 ## 19.5.2 빌트인 생성자 함수와 프로토타입 생성 시점
 > 빌트인 생성자 함수가 생성되는 시점에 프로토타입이 생성 => 모든 빌트인 생성자 함수는 전역 객체가 생성되는 시점에 생성
-+ 생성된 프로토타입은 빌트인 생성자 함수의 prototype 프로퍼티에 바인딩
-<br/><br/>
-# 19.6 객체 생성 방식과 프로토타입의 결정
++ 생성된 프로토타입은 빌트인 생성자 함수의 prototype 프로퍼티에 바인딩<br/>
+```js
+// 빌트인 객체인 Object는 전역 객체 window의 프로퍼티다.
+window.Object === Object // true
+```
 
-## 19.6.3 생성자 함수에 의해 생성된 객체의 프로토타입
 
