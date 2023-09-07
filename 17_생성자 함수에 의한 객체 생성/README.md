@@ -136,6 +136,24 @@ console.log(circle); // Circle { radius: 1, getDiameter: [Function] }
 + 생성자 함수 내부에서 명시적으로 this가 아닌 다른 값 반환은 생성자 함수 기본 동작 훼손 => 생성자 함수 내부에서 return문을 반드시 생략해야함!
 <br/><br/>
 ## 17.2.4 내부 메서드 [[Call]]과 [[Construct]]
+```js
+function foo(){}
+
+foo(); // 일반적인 함수로서 호출 : [[Call]]이 호출된다.
+
+new foo(); // 생성자 함수로서 호출 : [[Construct]]가 호출된다.  
+```
++ 내부 메서드 [[Call]]을 갖는 함수 객체 : callable ( = 호출할 수 있는 객체 = 함수)
++ 내부 메서드 [[Construct]]를 갖는 함수 객체 : constructor ( = 생성자 함수)
++ 내부 메서드 [[Construct]]를 갖지 않는 함수 객체 : non-constructor ( = 객체를 생성자 함수로서 호출할 수 없는 함수)
+<br/><br/>
+## 17.2.5 constructor와 non-constructor의 구분
+> - constructor : 함수 선언문, 함수 표현식, 클래스(클래스도 함수다)
+> - non-constructor : 메서드
++ 모든 함수 객체는 반드시 내부 메서드 [[ Call ]] 을 가지고 있다.
++ 모든 함수 객체가 [[ Construct ]] 을 가지고 있는 것은 아니다.
+> 즉, 함수 객체는 callable 이면서 constructor 이거나, callable 이면서 non-constructor 다. 모든 함수 객체는 호출할 수 있지만, 모든 함수 객체가 생성자 함수로써 호출할 수 있는 것은 아니다.
+## 17.2.6 new 연산자
 
 
 
