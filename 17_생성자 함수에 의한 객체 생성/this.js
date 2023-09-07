@@ -2,7 +2,7 @@ function foo(){
     console.log(this);
 }
 
-// 일반 함수로서 호출
+// 일반 함수로서 호출//
 foo(); // window
 
 const obj = {foo};
