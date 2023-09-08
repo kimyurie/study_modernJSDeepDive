@@ -204,5 +204,66 @@ function Person(name){
 // 빌트인 객체인 Object는 전역 객체 window의 프로퍼티다.
 window.Object === Object // true
 ```
+# 19.6 객체 생성 방식과 프로토타입의 결정
+[객체 생성 방법]<br/>
++ 객체 리터럴
++ Object 생성자 함수
++ 생성자 함수
++ Object.create 메서드
++ 클래스(ES6)
+> 공통점 : 추상 연산 OrdinaryObjectCreate에 의해 생성
+=> 프로토타입은 추상 연산 OrdinaryObjectCreate에 전달되는 인수에 의해 결정되며 이 인수는 객체가 생성되는 시점에 객체 생성 방식에 의해 결정
+## 19.6.1 객체 리터럴에 의해 생성된 객체의 프로토타입
+> 객체 리터럴에 의해 생성되는 객체의 프로토타입은 Object.prototype
+```js
+const obj = { x : 1 };
+
+// 객체 리터럴에 의해 생성된 obj 객체는 Object.prototype을 상속받는다
+console.log(obj.constructor === Object); // true
+console.log(obj.hasOwnProperty('x')); // true
+```
+## 19.6.2 Object 생성자 함수에 의해 생성된 객체의 프로토타입
+> Object 생성자 함수에 의해 생성되는 객체의 프로토타입은 Object.prototype
+```js
+const obj = new Object();
+obj.x = 1;
+
+// Object 생성자함수에 의해 생성된 obj 객체는 Object.prototype을 상속받는다
+console.log(obj.constructor === Object); // true
+console.log(obj.hasOwnProperty('x')); // true
+```
+## 19.6.3 생성자 함수에 의해 생성된 객체의 프로토타입
+> 생성자 함수에 의해 생성되는 객체의 프로토타입은 생성자 함수의 prototype 프로퍼티에 바인딩되어 있는 객체
++ 앞선 객체 리터럴과 Object 생성자 함수에 의해 생성되는 객체의 프로토타입인 Object.prototype과는 달리 오로지 constructor 프로퍼티만 존재한다. 
+```js
+function Person(name){
+    this.name = name;
+}
+
+// Person.prototype에 프로퍼티 추가해 하위 객체가 상속받을 수 있도록 구현 - sayHello 메서드 상속받아 자신의 메서드처럼 사용 가능
+Person.prototype.sayHello = function() {
+    console.log(`Hi! My name is ${this.name}`);
+};
+
+const me = new Person('Lee');
+const you = new Person('Kim');
+
+me.sayHello(); // Hi! My name is Lee
+you.sayHello(); // Hi! My name is Kim
+```
+<br/><br/>
+# 19.7 프로토타입 체인
+
+
+
+
+
+
+
+
+
+
+
+
 
 
