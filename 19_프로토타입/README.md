@@ -356,7 +356,31 @@ console.log(me.constructor === Person); // false
 console.log(me.constructor === Object); // true
 ```
 # 19.10 instanceof 연산자
+> 객체 instanceof 생성자 함수<br/>
+> => 우변의 생성자 함수의 prototype에 바인딩된 객체가 좌변의 객체의 프로토타입 체인 상에 존재하면 true 아니면 false 
+```js
+function Person(name) {
+    this.name = name;
+}
 
+const me = new Person('Lee');
+
+const parent = {}; // 프로토타입으로 교체할 객체
+
+Object.setPrototypeOf(me, parent); // 프로토타입의 교체
+
+// Person 생성자 함수와 parent 객체는 연결되어 있지 않다
+console.log(Person.prototype === parent); // false
+console.log(parent.constructor === Person); // false
+
+Person.prototype = parent; // parent 객체를 Person 생성자 함수에 바인딩
+
+console.log(me instanceof Person); // true
+console.log(me instanceof Object); // true
+```
++ instanceof 연산자는 생성자 함수의 prototype에 바인딩된 객체가 프로토타입 체인 상에 존재하는지 확인한다. 
+# 19.11 직접 상속
+## 19.11.1 Object.create에 의한 직접 상속
 
 
 
