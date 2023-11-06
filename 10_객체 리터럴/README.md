@@ -69,68 +69,85 @@ console.log(obj); // { hello : 'world' }
 ___
 <br/><br/>
 # 10.4 메서드
+> 객체에 묶여있는 함수 (프로퍼티 값이 함수인 경우)
 ```js
 var circle = {
     radius: 5, // 프로퍼티
     getDiameter: function() { // 메서드
-        return 2 * this.radius; // this는 circle을 가리킴
+        return 2 * this.radius; // this는 circle 가리키는 참조변수 (ㄴ22.this)
     }
 };
 
 console.log(circle.getDiameter()); // 10
 ```
-# 프로퍼티 접근
-> 마침표 표기법 : . / 대괄호 표기법 : []
+___
+<br/><br/>
+# 10.5 프로퍼티 접근
+> 마침표 표기법(.) / 대괄호 표기법([])
 ```js
 var person = {
     name: 'Lee'
 };
 
-console.log(person.name); // Lee // 마침표 표기법에 의한 접근
-console.log(person['name']);// Lee // 대괄호 표기법에 의한 접근
+ // 마침표 표기법에 의한 접근
+console.log(person.name); // Lee
+// 대괄호 표기법에 의한 접근
+// ➡️ 대괄호 프로퍼티 접근 연산자 내부에 지정하는 프로퍼티 키는 반드시 '따옴표로 감싼 문자열'이여야 한다
+console.log(person['name']);// Lee
+
+// ⚠️ 아래처럼 대괄호로 감싸지 않은 이름을 프로퍼티 키로 사용하면 js 엔진은 이를 식별자로 해석한다 (숫자는 따옴표 생략 가능)
+console.log(person[name]); // ReferenceError: name is not defined 
+// ⚠️ 아래처럼 존재하지 않는 프로퍼티(age)에 접근하면 undefined 반환 (ReferenceError가 발생하지 않는데 주의)
+console.log(person.age); // undefined
+ 
 ```
-+ 대괄호 프로퍼티 접근 연산자 내부에 지정하는 프로퍼티 키는 반드시 따옴표로 감싼 문자열이여야 함 (ex) person['name']
-# 프로퍼티 값 갱신
+___
+<br/><br/>
+# 10.6 프로퍼티 값 갱신
 ```js
 var person = {
     name: 'Lee'
 };
 
+// person 객체에 name 프로퍼티가 존재하므로 name 프로퍼티 값이 갱신된다 
 person.name = 'Kim';
 
 console.log(person); // { name: 'Kim' }
 ```
-# 프로퍼티 동적 생성
-+ 존재하지 않는 프로퍼티에 값을 할당하면 프로퍼티가 동적으로 생성되어 추가되고 프로퍼티 값이 할당
+___
+<br/><br/>
+# 10.7 프로퍼티 동적 생성
 ```js
 var person = {
     name : 'Lee'
 };
 
+// person 객체에 존재하지 않은 프로퍼티인 age에 값을 할당하면 
 person.age = 20;
-
+// 아래 결과와 같이 person 객체에 age 프로퍼티가 동적으로 생성되고 값이 할당된다 
 console.log(person); // { name: 'Lee', age: 20 }
 ```
-# 프로퍼티 삭제
+___
+<br/><br/>
+# 10.8 프로퍼티 삭제
 + delete 연산자 사용
 ```js
 var person = {
     name : 'Lee'
 };
 
-person.age = 20;
-
+person.age = 20; // 프로퍼티 동적 생성 
 console.log(person); // { name: 'Lee', age: 20 }
 
-// 프로퍼티 삭제
-delete person.age;
-delete person.name;
-
-console.log(person); // {}
+delete person.age; // 프로퍼티 삭제
+delete person.address; // person 객체에 존재하지 않은 address 프로퍼티를 삭제시 삭제 불가(이때 에러 발생x)
+console.log(person); // { name: 'Lee' }
 ```
-# ES6에서 추가된 객체 리터럴의 확장 기능
-## 프로퍼티 축약 표현
-+ 프로퍼티 값은 변수에 할당된 값, 즉 식별자 표현식일 수 있다
+___
+<br/><br/>
+# 10.9 ES6에서 추가된 객체 리터럴의 확장 기능
+## 10.9.1 프로퍼티 축약 표현
++ 프로퍼티 값은 변수에 식별자 표현식일 수 있다 
 ```js
 var x = 1, y = 2;
 
@@ -141,18 +158,20 @@ var obj = {
 
 console.log(obj); // { x: 1, y: 2 }
 ```
-+ 변수 이름과 프로퍼티 키가 동일한 이름일 때 프로퍼티 키 생략 가능, 이때 키는 변수 이름으로 자동 생성
++ 변수 이름과 프로퍼티 키가 동일한 이름일 때 프로퍼티 키는 생략 가능하고 이때 프로퍼티 키는 변수 이름으로 자동 생성
 ```js
 let a = 1, b = 2;
 
-const obj2 = {a, b}; // 프로퍼티 축약 표현 ( 프로퍼티 키 생략 )
+// 프로퍼티 축약 표현 ( 프로퍼티 키 생략 )
+const obj2 = {a, b}; 
 
 console.log(obj2); // { a: 1, b: 2 }
 ```
-## 계산된 프로퍼티 이름
-> 프로퍼티 키로 사용할 표현식을 대괄호([])로 묶어야 함
-+ 계산된 프로퍼티 이름으로 프로퍼티 키를 동적 생성하려면 객체 리터럴 외부에서 대괄호([]) 표기법을 사용해야 함
+## 10.9.2 계산된 프로퍼티 이름
+> 문자열 또는 문자열로 타입 변환할 수 있는 값으로 평가되는 표현식을 사용해 프로퍼티 키를 동적으로 생성할 수 있다. 프로퍼티 키로 사용할 표현식은 대괄호[]로 묶어야 한다 
 ```js
+// ES5
+// ES5에서는 객체 리터럴 외부에서 대괄호 표기법을 사용해야 한다 
 var prefix = 'prop';
 var i = 0;
 
@@ -165,12 +184,12 @@ obj[prefix + '-' + ++i] = i;
 
 console.log(obj); // { 'prop-1': 1, 'prop-2': 2, 'prop-3': 3 }
 ```
-+ 객체 리터럴 내부에서도 계산된 프로퍼티 이름으로 프로퍼티 키 동적 생성 가능
 ```js
+// ES6
 const pre = 'prop';
 let c = 0;
 
-// 객체 리터럴 내부에서 계산된 프로퍼티 이름으로 프로퍼티 키를 동적 생성
+// ES6에서는 객체 리터럴 내부에서 계산된 프로퍼티 이름으로 프로퍼티 키를 동적 생성할 수 있다 
 const obj3 = {
     [`${pre}-${++c}`]: c,
     [`${pre}-${++c}`]: c,
@@ -179,22 +198,26 @@ const obj3 = {
 
 console.log(obj3); // { 'prop-1': 1, 'prop-2': 2, 'prop=3': 3 }
 ```
-## 메서드 축약 표현
-* 메서드를 정의할 때 function 키워드를 생략한 축약 표현 사용 가능
+## 10.9.3 메서드 축약 표현
++ ES6에서는 메서드를 정의할 때 function 키워드를 생략한 축약 표현을 사용할 수 있다 
 ```js
 const obj = {
     name: 'Lee',
-    // sayHi : function(){
-    //     console.log('Hi!' + this.name);
-    // }
+   // ES5에서는 메서드 정의시 프로퍼티 값으로 함수를 할당
+   // sayHi: function () {
+   //   console.log(`Hi! ${this.name}`);
+   // },
 
-    sayHi() { // 메서드 축약 표현
+     // ES6에서는 메서드 축약 표현 사용 
+    sayHi() {
         console.log('Hi!' + this.name);
     }
 };
 
-obj.sayHi(); // Hi!Lee
+obj.sayHi(); // Hi! Lee
 ```
++ 메서드 축약 표현으로 정의한 메서드는 프로퍼티에 할당한 함수와 다르게 동작한다 (ㄴ26.2 메서드)
+___
 
 
 
