@@ -54,19 +54,28 @@ var add = (x,y) => x + y;
 ```
 ___
 <br/><br/>
-## 12.4.1 함수 선언문
+## 12.4.1~2 함수 선언문과 함수 리터럴
++ 함수 선언문은 함수 리터럴과 형태가 동일하며 문맥에 따라 함수 선언문으로 해석될수도 있고, 함수 리터럴 표현식으로 해석될 수도 있다
++ 단, 함수 선언문은 `함수 이름을 생략 불가능❌` 함수 리터럴은 함수 이름 생략 가능⭕ (기명 함수 리터럴일 때 함수 선언문과 형태 동일)
++ 함수 선언문과 함수 리터럴 표현식이든 함수가 생성되는 건 동일하지만 함수를 생성하는 내부 동작에 차이가 있다
 ```js
-// 함수 선언문
-function add(x, y){
-    return x + y;
-}
+function foo() { console.log('foo');} // 함수 선언문
 
-console.log(add(2,5)); // 7
-```
-+ 함수 선언문은 함수 이름을 생략할 수 ❌ (함수 리터럴은 함수 이름 생략 가능⭕)
-+ 함수 선언문은 `표현식이 아닌 문`이기 때문에 크롬 개발자 도구 콘솔에서 실행 시 완료 값 undefined가 출력된다 (만약 `표현식인 문`이라면 표현식이 평가되어 생성된 함수가 출력되어야 한다) → [5.6 표현식인 문과 표현식이 아닌 문]( https://github.com/kimyurie/study_modernJSdeepDive/tree/master/05_%ED%91%9C%ED%98%84%EC%8B%9D%EA%B3%BC%20%EB%AC%B8#56-%ED%91%9C%ED%98%84%EC%8B%9D%EC%9D%B8-%EB%AC%B8%EA%B3%BC-%ED%91%9C%ED%98%84%EC%8B%9D%EC%9D%B4-%EC%95%84%EB%8B%8C-%EB%AC%B8) 참고
-```js
-```
+foo(); // foo
 
+(function bar() {console.log('bar');}) // 그룹 연산자() 내에 있으므로 함수 리터럴 표현식
+bar(); // ReferenceError: bar is not defined
+```
++ 위 코드에서 함수 선언문으로 생성된 foo()는 호출 가능하고 함수 리터럴 표현식으로 생성된 bar()는 호출할 수 없는 이유?<br/>
+→ `함수 리터럴에서 함수 이름은 함수 몸체 내에서만 참조할 수 있는 식별자다.` 아래 그림과 같이 함수 이름 bar()는 함수 몸체 내에서만 참조할 수 있는 식별자이므로 몸체 외부에서는 함수를 호출할 수 없다 
+<img src="https://velog.velcdn.com/images/kozel/post/979ec28d-9cce-4f91-9d0d-9dcf7edad2e6/image.jpeg" width='600'/><br/><br/>
+→ foo는 js 엔진이 암묵적으로 생성한 식별자다. `js 엔진은 생성된 함수를 호출하기 위해 함수 이름과 동일한 식별자를 암묵적으로 생성하고 거기에 함수 객체를 할당한다`
+<img src="https://velog.velcdn.com/images/kozel/post/3b48511a-ac0e-441e-a2a9-f31ba2325374/image.jpeg" width='600'/><br/><br/>
++ 즉, 함수는 함수 이름으로 호출하는 것이아니라 `함수 객체를 가리키는 식별자로 호출`한다
+<img src="https://velog.velcdn.com/images/kozel/post/4a5174b1-b72e-4a5b-8350-91e30f3af9e0/image.jpeg" width='600'/><br/><br/>
++ js 함수는 값의 성질을 갖는 객체인 일급 객체이다
+___
+<br/><br/>
+## 12.4.3 함수 생성 시점과 호이스팅 
 
 
