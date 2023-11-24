@@ -331,6 +331,7 @@ me.sayHello(); // TypeError
 ___
 <br/><br/>
 # 19.9 프로토타입 교체
+> 프로토타입은 다른 객체로 변경할 수 있다 즉, 부모 객체인 프로토타입을 동적으로 변경할 수 있다
 + 프로토타입 교체를 통해 객체 간의 상속 관계를 동적으로 변경하는 것은 번거로우며, 직접 프로토타입을 교체하는 것은 바람직하지 않다<br/>
  => 직접 상속 이나 ES6+ 의 클래스 를 사용하면 간편하고 직관적으로 상속 관계를 구현 가능
 ## 19.9.1 생성자 함수에 의한 프로토타입의 교체
@@ -355,8 +356,9 @@ const me = new Person("WI");
 // 생성자 함수에 프로퍼티로 프로토타입을 교체하면 constructor 프로퍼티와 생성자 함수 간의 연결이 파괴
 console.log(me.constructor === Person); // false
 // 프로토타입 체인을 따라 Object.prototype 의 constructor 프로퍼티가 검색
-console.log(me.constructor === Object); // true << 🔍
+console.log(me.constructor === Object); // true
 ```
+___
 ## 19.9.2 인스턴스에 의한 프로토타입의 교체
 ```js
 function Person(name) {
@@ -377,9 +379,11 @@ Object.setPrototypeOf(me, parent); // me 객체의 프로토타입을 parent 객
 console.log(me.constructor === Person); // false
 console.log(me.constructor === Object); // true
 ```
+___
+<br/><br/>
 # 19.10 instanceof 연산자
-> 객체 instanceof 생성자 함수<br/>
-> => 우변의 생성자 함수의 prototype에 바인딩된 객체가 좌변의 객체의 프로토타입 체인 상에 존재하면 true 아니면 false 
+> 객체 instanceof 생성자 함수
++ 우변의 생성자 함수의 prototype에 바인딩된 객체가 좌변의 객체의 프로토타입 체인 상에 존재하면 true 아니면 false 
 ```js
 function Person(name) {
     this.name = name;
@@ -400,7 +404,8 @@ Person.prototype = parent; // parent 객체를 Person 생성자 함수에 바인
 console.log(me instanceof Person); // true
 console.log(me instanceof Object); // true
 ```
-+ instanceof 연산자는 생성자 함수의 prototype에 바인딩된 객체가 프로토타입 체인 상에 존재하는지 확인한다. 
+___
+<br/><br/>
 # 19.11 직접 상속
 ## 19.11.1 Object.create에 의한 직접 상속
 > 번거롭
