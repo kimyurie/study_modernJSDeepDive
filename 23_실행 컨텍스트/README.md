@@ -64,7 +64,11 @@ ___
 ___
 <br/><br/>
 # 23.6 실행 컨텍스트의 생성과 식별자 검색 과정
-> 나중에 정리해놓기
+## 23.6.1 전역 객체 생성 
++ 전역 객체는 전역 코드가 평가되기 이전에 생성
+## 23.6.2 전역 코드 평가 
+
+___
 <br/><br/>
 # 23.7 실행 컨텍스트와 블록 레벨 스코프
 + var 키워드로 선언한 변수는 오로지 함수의 코드 블록만 지역 스코프로 인정하는 `함수 레벨 스코프`를 따르고<br/>
@@ -83,5 +87,5 @@ console.log(x); // 1
 이를 위해 `선언적 환경 레코드를 갖는 렉시컬 환경을 새롭게 생성하여 기존의 전역 렉시컬 환경을 교체한다(1)`
 <img src='https://user-images.githubusercontent.com/80154058/143033396-f2665431-1a19-4f5a-a36c-5df2ad36ddcc.png' width='600'/><br/>
 + if문의 코드 블록의 실행이 종료되면 `if문의 코드 블록이 실행되기 이전의 렉시컬 환경으로 되돌린다(2)`
-<img src='https://user-images.githubusercontent.com/80154058/143033877-7f22b20b-aa9f-45ad-ad05-c8884799b6a8.png' width='600'/>
+<img src='https://user-images.githubusercontent.com/80154058/143033877-7f22b20b-aa9f-45ad-ad05-c8884799b6a8.png' width='600'/><br/>
 ___
