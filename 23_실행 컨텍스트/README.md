@@ -64,9 +64,47 @@ ___
 ___
 <br/><br/>
 # 23.6 실행 컨텍스트의 생성과 식별자 검색 과정
+```js
+var x = 1;
+const y = 2;
+
+function foo (a) {
+    var x = 3;
+    const y = 4;
+    
+    function bar (b) {
+        const z = 5
+        console.log(a + b + x + y + z)
+    }
+    bar(10);
+}
+foo(20); // 42
+```
 ## 23.6.1 전역 객체 생성 
-+ 전역 객체는 전역 코드가 평가되기 이전에 생성
+> 전역 객체는 전역 코드가 평가되기 이전에 생성
 ## 23.6.2 전역 코드 평가 
+### 1️⃣ 전역 실행 컨텍스트 생성
+> 비어있는 전역 실행 컨텍스트 생성하여 실행 컨텍스트 스택에 푸시
+### 2️⃣ 전역 렉시컬 환경 생성 
+> 전역 렉시컬 환경을 생성하고 전역 실행 컨텍스트에 바인딩<br/>
+1) *전역 환경 레코드 생성*<br/>
+전역 렉시컬 환경을 구성하는 컴포넌트인 `전역 환경 레코드`는 전역 변수를 관리하는 전역 스코프, 전역 객체의 빌트인 전역 프로퍼티와 빌트인 전역 함수, 표준 빌트인 객체를 제공한다<br/>
+전역 환경 레코드는 `객체 환경 레코드`와 `선언적 환경 레코드`로 구성되어 있다<br/>
+-`객체 환경 레코드 생성` : 전역 코드 평가 과정에서 `var` 키워드로 선언한 전역 변수와 함수 선언문으로 정의된 전역 함수는 전역 환경 레코드의 객체 환경 레코드에 연결된 BindingObject를 통해
+전역 객체의 프로퍼티와 메서드가 된다<br/>
+<img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdqOi9N%2FbtrWml7Kfu3%2FmoH3CH0a2SWvuBc00NRYHk%2Fimg.png' width='800'/><br/>
+-`선언적 환경 레코드 생성` : `let, const` 키워드로 선언한 전역 변수는 선언적 환경 레코드에 등록되고 관리된다<br/>
+<img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbt25zN%2FbtrWdfBvsmj%2Fd588C3VbgXzeSBWViR8Vg0%2Fimg.png' width='800'/><br/>
+2) *this 바인딩*<br/>
+전역 환경 레코드의 [[ GlobalThisValue ]] 내부 슬롯에 this가 바인딩된다. 일반적으로 전역 코드에서 this는 전역 객체를 가리키므로 전역 환경 레코드의 [[ GlobalThisValue ]] 내부 슬롯에는 전역 객체가 바인딩된다
+<img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbTlGnj%2FbtrWeXGVROU%2Fv9ui5HD3WDP8jtsnfhDCvK%2Fimg.png' width='800'/><br/>
+3) *외부 렉시컬 환경에 대한 참조 결정*<br/>
+외부 렉시컬 환경에 대한 참조는 현재 평가 중인 소스코드를 포함하는 외부 소스코드의 렉시컬 환경, 즉 상위 스코프를 가리킨다. 이를 통해 단방향 링크드 리스트인 스코프 체인을 구현한다
+<img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbgu2Sy%2FbtrWdgtG9RN%2F5QA0fX6jKKP7RBZtCoMZ01%2Fimg.png' width='800'/><br/>
+## 23.6.2 전역 코드 실행
+> 전역 코드가 순차적으로 실행 되어 변수 할당문이 실행되어 전역 변수 x, y에 값이 할당된다
+<img src='https://user-images.githubusercontent.com/80154058/142879999-870c8181-87d1-41e1-ba53-4cd7c4898ae2.png' width='700'/><br/>
++ `식별자 결정`을 위해 실행 컨텍스트에 등록된 식별자를 검색한다 (가장 먼저 현재 실행 중인 실행 컨텍스트를 검색, 없으면 상위 스코프로 이동하여 식별자 검색)
 
 ___
 <br/><br/>
