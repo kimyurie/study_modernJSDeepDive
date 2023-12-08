@@ -430,7 +430,7 @@ ___
 <br/><br/>
 # 19.11 직접 상속
 ## 19.11.1 ⭐Object.create에 의한 직접 상속
-> ㄴ 실무에서 많이 쓰임 나중에 정리해두기 
+> ㄴ 정리해두기 
 ## 19.11.2 객체 리터럴 내부에서 __proto__에 의한 직접 상속
 ```js
 const myProto = { x : 10 };
@@ -551,7 +551,7 @@ for(const value of arr){
     console.log(value); // 1 2 3
 }
 ```
-## 19.14.2 :✔️Object.keys / values / entries 메서드 (ㄴ알고리즘에 많이 나옴)
+## 19.14.2 :✔️Object.keys / values / entries 메서드 
 > Object.keys 메서드는 객체 자신의 열거 가능한 프로퍼티 키를 배열로 변환
 ```js
 const person = {
