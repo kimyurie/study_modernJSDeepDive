@@ -530,7 +530,9 @@ for (const key in person) {
 ```
 + for...in문은 객체의 프로토타입 체인 상에 존재하는 모든 프로토타입의 프로퍼티 중에서 프로퍼티 어트리뷰트 [[Enumerable]]의 값이 true인 프로퍼티를 순회하며 열거
 + 프로퍼티 열거 시 순서를 보장하지 않음 (숫자인 프로퍼티 키만 정렬 실시)
-+ 배열에는 for..in문 말고 for문이나 for...of 또는 Array.prototype.forEach 메서드 사용 권장  
++ ⭐배열에는 for..in문 말고 for문이나 for...of 또는 Array.prototype.forEach 메서드 사용 권장<br/>
+  ☑️ for...in문이 느린 이유? <br/>
+  객체는 순서가 정해져있지 않아서 주소값을 일일이 찾아야 하므로 더 느려짐 (for of를 사용하는 게 더 좋음)
 ```js
 const arr = [1,2,3];
 arr.x = 10; // 배열도 객체이므로 프로퍼티 가질 수 있다
