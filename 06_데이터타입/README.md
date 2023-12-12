@@ -2,6 +2,7 @@
 > 값의 종류로 원시 타입과 객체 타입으로 나뉜다
 + 원시 타입 : 숫자 타입, 문자열 타입, 불리언 타입, undefined 타입, null 타입, 심벌 타입
 + 객체 타입 : 객체, 함수, 배열 등
++ ⭐총 7가지(Number, String, Boolean, unefined, null, Symbol, 객체타입)
 ___
 <br/><br/>
 # 6.1 숫자 타입
